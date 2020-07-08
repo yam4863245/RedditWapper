@@ -6,8 +6,13 @@ import retrofit2.http.Query
 
 interface ServicesApiInterface {
 
-    @GET("/top/.json"/*"/r/hentai/hot/.json"*/)
+    @GET("/top/.json")
     fun getTopPosts(@Query("after") after: String? = null,
+                    @Query("before") before: String? = null,
+                    @Query("limit") limit: Int = 10): Call<PostsResponse>
+
+    @GET("/r/hentai/hot/.json")
+    fun getHPosts(@Query("after") after: String? = null,
                     @Query("before") before: String? = null,
                     @Query("limit") limit: Int = 10): Call<PostsResponse>
 }

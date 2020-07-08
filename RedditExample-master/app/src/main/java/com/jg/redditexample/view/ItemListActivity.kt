@@ -1,5 +1,6 @@
 package com.jg.redditexample.view
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -151,6 +152,12 @@ class ItemListActivity : AppCompatActivity() {
             R.id.action_clear_all -> {
                 viewModel.clearPosts()
                 Toast.makeText(applicationContext, "All items cleared!", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.action_h ->{
+                PostRepositoryRemote.isH = !PostRepositoryRemote.isH
+                startActivity(Intent(this,ItemListActivity::class.java))
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)

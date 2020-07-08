@@ -5,4 +5,7 @@
         android:id="@+id/action_clear_all"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:title="@string/clear_all" />
+    <item
+        android:id="@+id/action_h"
+        android:title="h" />
 </menu>
