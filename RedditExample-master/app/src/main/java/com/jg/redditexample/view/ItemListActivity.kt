@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -132,12 +131,13 @@ class ItemListActivity : AppCompatActivity() {
     fun filterChildren(children: MutableList<Children>) {
         children.removeIf {
             !it.data.thumbnail.contains("https") ||
-                    (!it.data.url_overridden_by_dest.contains("jpg") &&
-                    !it.data.url_overridden_by_dest.contains("png") &&
-                    !it.data.url_overridden_by_dest.contains("gif"))
+                    (!it.data.url.contains("jpg") &&
+                    !it.data.url.contains("png") &&
+                    !it.data.url.contains("gif"))
         }
 
         children.forEach {
+            it.data.url = it.data.url.replace("gifv","gif")
             Log.e("children", it.data.thumbnail)
         }
     }
