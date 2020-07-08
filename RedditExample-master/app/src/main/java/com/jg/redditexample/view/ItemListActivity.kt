@@ -149,11 +149,6 @@ class ItemListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_clear_all -> {
-                viewModel.clearPosts()
-                Toast.makeText(applicationContext, "All items cleared!", Toast.LENGTH_LONG).show()
-                true
-            }
             R.id.action_h ->{
                 PostRepositoryRemote.isH = !PostRepositoryRemote.isH
                 startActivity(Intent(this,ItemListActivity::class.java))

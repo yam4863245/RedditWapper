@@ -1,5 +1,6 @@
 package com.jg.redditexample.utils
 
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,4 +15,5 @@ fun ImageView.loadImage(uri: String?) {
         .setDefaultRequestOptions(options)
         .load(uri)
         .into(this)
+        .view.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fade_in))
 }
