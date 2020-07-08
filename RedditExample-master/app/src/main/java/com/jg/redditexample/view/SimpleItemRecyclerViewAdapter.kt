@@ -66,8 +66,8 @@ class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity
         val commentsView: TextView = view.comments
         val createdView: TextView = view.created
         val imageView: ImageView = view.imageViewThumb
-        val imageReadView : ImageView = view.imageView
         private val dismissView: TextView = view.dismiss
+        val imageReadView : ImageView = view.imageView
         val contentLayoutView: LinearLayout = view.contentLayout
 
         init {

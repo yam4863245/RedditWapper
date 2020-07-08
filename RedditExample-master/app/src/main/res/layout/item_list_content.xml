@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/imageView"
@@ -43,13 +44,14 @@
     <LinearLayout
         android:id="@+id/contentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageViewThumb"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -61,7 +63,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -70,6 +73,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
             android:rotation="90"
+            android:visibility="gone"
             app:srcCompat="@android:drawable/arrow_up_float" />
 
     </LinearLayout>
@@ -79,7 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/dismiss"

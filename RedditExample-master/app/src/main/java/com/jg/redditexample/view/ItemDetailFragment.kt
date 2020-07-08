@@ -29,7 +29,6 @@ class ItemDetailFragment : Fragment() {
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
                 item = it.getSerializable(ARG_ITEM_ID) as Post?
-                activity?.toolbar_layout?.title = item?.author
             }
         }
     }
@@ -42,8 +41,7 @@ class ItemDetailFragment : Fragment() {
         item?.let {
             rootView.textViewContent.text = it.title
             rootView.textViewAuthor.text = it.author
-            rootView.imageViewThumb.loadImage(it.thumbnail)
-            rootView.imageViewThumb.setOnClickListener { saveImage(rootView.imageViewThumb!!, item!!.id) }
+            rootView.imageViewThumb.loadImage(it.url_overridden_by_dest)
         }
 
         return rootView

@@ -1,18 +1,22 @@
 package com.jg.redditexample.view
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jg.redditexample.R
+import com.jg.redditexample.data.Children
 import com.jg.redditexample.data.Data
 import com.jg.redditexample.model.PostRepositoryRemote
 import com.jg.redditexample.viewmodel.PostViewModel
@@ -33,9 +37,10 @@ class ItemListActivity : AppCompatActivity() {
     private var page: String? = ""
 
     companion object {
-        const val TAG= "View"
+        const val TAG = "View"
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
@@ -51,17 +56,21 @@ class ItemListActivity : AppCompatActivity() {
         setupRecyclerView(item_list)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun setupRecyclerView(recyclerView: RecyclerView) {
+        val children = viewModel.posts.value?.children
 
-        adapter = SimpleItemRecyclerViewAdapter(this, viewModel.posts.value?.children ?: mutableListOf(), twoPane)
+        adapter = SimpleItemRecyclerViewAdapter(this, children ?: mutableListOf(), twoPane)
         recyclerView.adapter = adapter
-            recyclerView.addItemDecoration(
-                DividerItemDecoration(
-                    this@ItemListActivity,
-                    LinearLayoutManager.VERTICAL
-                )
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                this@ItemListActivity,
+                LinearLayoutManager.VERTICAL
             )
-        recyclerView.addOnScrollListener(object : PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
+        )
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        recyclerView.addOnScrollListener(object :
+            PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
@@ -71,7 +80,7 @@ class ItemListActivity : AppCompatActivity() {
             }
 
             override fun loadMoreItems() {
-                if(!page.isNullOrEmpty()) {
+                if (!page.isNullOrEmpty()) {
                     viewModel.loadTopPosts(after = page!!, before = "")
                 }
             }
@@ -79,28 +88,32 @@ class ItemListActivity : AppCompatActivity() {
     }
 
 
-    private fun setupViewModel(){
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(repository = PostRepositoryRemote())).get(PostViewModel::class.java)
-        viewModel.posts.observe(this,renderPosts)
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setupViewModel() {
+        viewModel =
+            ViewModelProviders.of(this, ViewModelFactory(repository = PostRepositoryRemote()))
+                .get(PostViewModel::class.java)
+        viewModel.posts.observe(this, renderPosts)
 
 
-        viewModel.isViewLoading.observe(this,isViewLoadingObserver)
+        viewModel.isViewLoading.observe(this, isViewLoadingObserver)
         //viewModel.onMessageError.observe(this,onMessageErrorObserver)
         //viewModel.isEmptyList.observe(this,emptyListObserver)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
         isLoading = it
-        if(it){
-            progressBar.visibility= View.VISIBLE
-        }else{
-            progressBar.visibility=View.GONE
+        if (it) {
+            progressBar.visibility = View.VISIBLE
+        } else {
+            progressBar.visibility = View.GONE
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private val renderPosts = Observer<Data> {
         Log.v(TAG, "data updated $it")
-        if(it == null) {
+        if (it == null) {
             page = ""
             adapter.clearAll()
             return@Observer
@@ -108,7 +121,24 @@ class ItemListActivity : AppCompatActivity() {
         //layoutError.visibility=View.GONE
         //layoutEmpty.visibility=View.GONE
         page = it.after
+
+        filterChildren(it.children)
+
         adapter.update(it.children)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun filterChildren(children: MutableList<Children>) {
+        children.removeIf {
+            !it.data.thumbnail.contains("https") ||
+                    (!it.data.url_overridden_by_dest.contains("jpg") &&
+                    !it.data.url_overridden_by_dest.contains("png") &&
+                    !it.data.url_overridden_by_dest.contains("gif"))
+        }
+
+        children.forEach {
+            Log.e("children", it.data.thumbnail)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -122,7 +152,8 @@ class ItemListActivity : AppCompatActivity() {
                 viewModel.clearPosts()
                 Toast.makeText(applicationContext, "All items cleared!", Toast.LENGTH_LONG).show()
                 true
-            }else -> super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
