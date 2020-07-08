@@ -68,7 +68,7 @@ class ItemListActivity : AppCompatActivity() {
                 LinearLayoutManager.VERTICAL
             )
         )
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        //recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.addOnScrollListener(object :
             PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
             override fun isLastPage(): Boolean {

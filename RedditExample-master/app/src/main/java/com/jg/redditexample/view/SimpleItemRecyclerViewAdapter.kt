@@ -36,7 +36,7 @@ class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity
         holder.contentView.text = item.data.title
         holder.commentsView.text = parentActivity.getString(R.string.comments, item.data.num_comments.toString())
         holder.createdView.text = parentActivity.getString(R.string.hours_ago, calculateHours(item.data.created))
-        holder.imageView.loadImage(item.data.thumbnail)
+        holder.imageView.loadImage(item.data.url)
         holder.imageReadView.visibility = if (item.data.unreadStatus) View.VISIBLE else View.INVISIBLE
         with(holder.contentLayoutView) {
             tag = item
@@ -73,7 +73,7 @@ class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity
 
         init {
             dismissView.setOnClickListener(remove())
-            contentLayoutView.setOnClickListener(open())
+            //contentLayoutView.setOnClickListener(open())
         }
 
         private fun open(): (View) -> Unit = {
